@@ -1,84 +1,182 @@
+/* src/pages/ProductsList.css */
 :root {
     --primary-purple: #8b5cf6;
+    --secondary-gradient-start: #f7f0ff;
+    --secondary-gradient-end: #e0d7ff;
     --bg-light: #f9f9fb;
-    --border-radius: 12px;
+    --card-radius: 16px;
+    --card-padding: 2rem;
+    --transition-speed: 0.3s;
 }
 
-.product-page {
+.products-list {
     display: flex;
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+    background: linear-gradient(135deg, var(--secondary-gradient-start), var(--secondary-gradient-end));
+    border-radius: var(--card-radius);
+}
+
+/* Facets sidebar */
+.facets {
+    flex: 0 0 200px;
+    padding: 1rem;
     background: white;
-    border-radius: var(--border-radius);
+    border-radius: var(--card-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-right: 2rem;
+}
+
+.facets h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.facets label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.facets input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+/* Product grid */
+.grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 2rem;
+}
+
+.card {
+    background: white;
+    border-radius: var(--card-radius);
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 1000px;
-    margin: 2rem auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--card-padding);
+    position: relative;
 }
 
-.product-image {
-    flex: 1;
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    margin-bottom: 1.25rem;
+    border-radius: 8px;
     background: var(--bg-light);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 0.75rem;
 }
 
-.product-image img {
-    max-width: 100%;
-    height: auto;
+.card h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0.5rem 0;
+    color: #222;
 }
 
-.product-details {
-    flex: 1;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.product-details h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-.price {
-    font-size: 1.5rem;
+.card p {
+    margin: 0.25rem 0 1rem;
+    font-size: 1.1rem;
     color: var(--primary-purple);
-    margin-bottom: 1rem;
 }
 
-.description {
-    flex-grow: 1;
-    margin-bottom: 1.5rem;
-}
-
-.purchase-section {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.quantity-input {
-    display: flex;
-    flex-direction: column;
-}
-
-.quantity-input input {
-    width: 60px;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.btn-add {
+.card button {
     background: var(--primary-purple);
     color: white;
-    padding: 0.75rem 1.5rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
     cursor: pointer;
     font-weight: bold;
+    font-size: 0.95rem;
+    transition: background var(--transition-speed), transform var(--transition-speed);
 }
 
-.btn-add:hover {
+.card button:hover {
     background: #7c3aed;
+    transform: scale(1.05);
+}
+
+/* Dropdown for size/color */
+.dropdown {
+    position: absolute;
+    bottom: calc(var(--card-padding) + 1rem);
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    padding: 1rem 1.5rem;
+    width: 90%;
+    max-width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    z-index: 10;
+}
+
+.dropdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-row label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.dropdown-row select {
+    flex-grow: 1;
+    padding: 0.4rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.btn-confirm,
+.btn-cancel {
+    display: block;
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: background var(--transition-speed), transform var(--transition-speed);
+}
+
+.btn-confirm {
+    background: var(--primary-purple);
+    color: white;
+}
+
+.btn-confirm:hover {
+    background: #7c3aed;
+    transform: scale(1.05);
+}
+
+.btn-cancel {
+    background: #eee;
+    color: #333;
+}
+
+.btn-cancel:hover {
+    background: #ddd;
 }

@@ -1,0 +1,234 @@
+/* src/pages/Cart.css */
+:root {
+    --primary-purple: #8b5cf6;
+    --secondary-purple: #7c3aed;
+    --danger-red: #e11d48;
+    --bg-light: #f9f9fb;
+    --card-radius: 12px;
+    --transition-speed: 0.3s;
+}
+
+.cart-page {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: var(--card-radius);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.cart-page h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.cart-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.cart-item .info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.cart-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    background: var(--bg-light);
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.cart-item h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #222;
+}
+
+.cart-item p {
+    margin: 0.25rem 0;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.cart-item .actions {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.cart-item .price {
+    font-weight: bold;
+    color: var(--primary-purple);
+}
+
+.cart-item .actions button {
+    background: var(--danger-red);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background var(--transition-speed);
+}
+
+.cart-item .actions button:hover {
+    background: #bf1e3c;
+}
+
+.summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+
+.summary h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.checkout {
+    background: var(--primary-purple);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background var(--transition-speed), transform var(--transition-speed);
+}
+
+.checkout:hover {
+    background: var(--secondary-purple);
+    transform: scale(1.05);
+}
+
+/* Steps and forms */
+.form-step {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-step h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.form-step label {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #555;
+}
+
+.form-step input,
+.form-step select,
+.form-step textarea {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.form-actions button {
+    background: var(--primary-purple);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background var(--transition-speed), transform var(--transition-speed);
+}
+
+.form-actions button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.form-actions button:hover:not(:disabled) {
+    background: var(--secondary-purple);
+    transform: scale(1.03);
+}
+
+/* Confirmation and Survey */
+.confirmation,
+.form-step:last-child {
+    text-align: center;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.confirmation h2,
+.form-step:last-child h2 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.confirmation p,
+.form-step:last-child p {
+    margin-bottom: 1rem;
+    color: #555;
+}
+
+/* Survey Buttons */
+.confirmation .form-actions button,
+.form-step:last-child .form-actions button {
+    background: var(--primary-purple);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background var(--transition-speed), transform var(--transition-speed);
+}
+
+.confirmation .form-actions button:hover,
+.form-step:last-child .form-actions button:hover {
+    background: var(--secondary-purple);
+    transform: scale(1.05);
+}
+
+.form-step:last-child select,
+.form-step:last-child textarea {
+    margin-bottom: 1rem;
+}
