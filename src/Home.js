@@ -18,6 +18,23 @@ export default function Home() {
       </section>
 
       {/* …rest of your home page content here… */}
+
+      <section className="features">
+        <div className="feature-card">
+          <img src="/payment.avif" alt="Secure Payment" />
+          <p>Secure Payment</p>
+        </div>
+        <div className="feature-card">
+          <img src="/support.png" alt="24/7 Support" />
+          <p>24/7 Support</p>
+        </div>
+        <div className="feature-card">
+          <img src="/delivery.png" alt="Fast Delivery" />
+          <p>Fast Delivery</p>
+        </div>
+      </section>
     </div>
+
+              
   );
 }
