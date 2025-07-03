@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useCartDispatch } from '../context/CartContext';
 import './Product.css';
 
 export default function Product() {
@@ -12,10 +11,18 @@ export default function Product() {
   };
 
   const [quantity, setQuantity] = useState(1);
-  const dispatch = useCartDispatch();
 
   const handleAddToCart = () => {
-    dispatch({ type: 'ADD_ITEM', payload: { ...product, quantity } });
+    // Read existing cart or start fresh
+    const existing = JSON.parse(localStorage.getItem('cart') || '[]');
+    const idx = existing.findIndex(item => item.id === product.id);
+    if (idx > -1) {
+      existing[idx].quantity += quantity;
+    } else {
+      existing.push({ ...product, quantity });
+    }
+    localStorage.setItem('cart', JSON.stringify(existing));
+    alert(`${quantity} × ${product.name} added to cart`);
   };
 
   return (
@@ -27,6 +34,7 @@ export default function Product() {
         <h1>{product.name}</h1>
         <p className="price">${product.price}</p>
         <p className="description">{product.description}</p>
+
         <div className="purchase-section">
           <div className="quantity-input">
             <label htmlFor="quantity">Quantity:</label>
