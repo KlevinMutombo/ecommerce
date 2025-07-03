@@ -12,7 +12,37 @@ body {
   color: var(--dark);
 }
 
-/* Hero styles */
+/* === NAVBAR === */
+
+nav {
+  display: flex;
+  justify-content: space-between; /* Liens à gauche, logo à droite */
+  align-items: center;            /* Centre verticalement */
+  padding: 1rem 2rem;
+  background: var(--light-gray);
+  border-bottom: 1px solid #ddd;
+}
+
+.nav-links {
+  display: flex;
+}
+
+.nav-links a {
+  margin: 0 1rem;
+  text-decoration: none;
+  color: var(--dark);
+}
+
+.nav-links a:hover {
+  color: var(--purple);
+}
+
+nav img {
+  height: 40px; /* Ajuste la taille du logo */
+}
+
+/* === HERO SECTION === */
+
 .home-hero {
   display: flex;
   align-items: center;
@@ -55,4 +85,3 @@ body {
   width: 100%;
   height: auto;
 }
-
