@@ -22,7 +22,7 @@ export default function Home() {
 
 
          {/* Bouton pour accéder à la page des produits */}
-         <button onClick={() => window.location.href = '/products'}>
+         <button onClick={() => navigate('/products')}>
            Explore Our Products
          </button>
        </div>
