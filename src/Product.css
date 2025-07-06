@@ -1,4 +1,3 @@
-/* src/pages/ProductsList.css */
 :root {
     --primary-purple: #8b5cf6;
     --secondary-gradient-start: #f7f0ff;
@@ -18,7 +17,6 @@
     border-radius: var(--card-radius);
 }
 
-/* Facets sidebar */
 .facets {
     flex: 0 0 200px;
     padding: 1rem;
@@ -45,7 +43,6 @@
     margin-right: 0.5rem;
 }
 
-/* Product grid */
 .grid {
     flex: 1;
     display: grid;
@@ -111,7 +108,6 @@
     transform: scale(1.05);
 }
 
-/* Dropdown for size/color */
 .dropdown {
     position: absolute;
     bottom: calc(var(--card-padding) + 1rem);
@@ -179,4 +175,49 @@
 
 .btn-cancel:hover {
     background: #ddd;
+}
+
+.step-indicator {
+    padding: 0 1rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.step-indicator .steps {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.step-indicator .step {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--bg-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #aaa;
+    transition: background var(--transition-speed), color var(--transition-speed);
+}
+
+.step-indicator .step.active {
+    background: var(--primary-purple);
+    color: white;
+}
+
+.step-indicator .label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #555;
+    white-space: nowrap;
+}
+
+.btn-confirm:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
 }

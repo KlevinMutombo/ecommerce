@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import './Product.css';
 
-// Catalog with availability metadata for facets
 const catalog = [
   { id: 1, name: 'Air Max 270',         price: 150, image: '/airmax270.png',         availableSizes: ['US 7','US 8','US 9','US 10'], availableColors: ['Black','White'] },
   { id: 2, name: 'Air Max 90',          price: 140, image: '/airmax90.png',          availableSizes: ['US 6','US 7','US 8'],          availableColors: ['Red','Blue'] },
@@ -22,16 +21,29 @@ const allSizes = ['US 6','US 7','US 8','US 9','US 10','US 11'];
 const allColors = ['Black','White','Red','Blue','Green','Coral'];
 
 export default function ProductsList() {
+  const totalSteps = 4;
+  const [currentStep, setCurrentStep] = useState(1);
+
   const [filters, setFilters] = useState({ sizes: [], colors: [] });
   const [filteredCatalog, setFilteredCatalog] = useState(catalog);
   const [openConfiguratorId, setOpenConfiguratorId] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(allSizes[0]);
-  const [selectedColor, setSelectedColor] = useState(allColors[0]);
+  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
+
+   useEffect(() => {
+     if (
+       openConfiguratorId !== null &&
+       selectedSize !== '' &&
+       selectedColor !== ''
+     ) {
+       setCurrentStep(3);
+     }
+   }, [openConfiguratorId, selectedSize, selectedColor]);
 
   // Faceted filtering
   useEffect(() => {
     const result = catalog.filter(item => {
-      const sizeMatch  = filters.sizes.length === 0 || filters.sizes.some(sz => item.availableSizes.includes(sz));
+      const sizeMatch = filters.sizes.length === 0 || filters.sizes.some(sz => item.availableSizes.includes(sz));
       const colorMatch = filters.colors.length === 0 || filters.colors.some(cl => item.availableColors.includes(cl));
       return sizeMatch && colorMatch;
     });
@@ -43,19 +55,20 @@ export default function ProductsList() {
       const list = prev[type];
       return {
         ...prev,
-        [type]: list.includes(value)
-          ? list.filter(x => x !== value)
-          : [...list, value]
+        [type]: list.includes(value) ? list.filter(x => x !== value) : [...list, value]
       };
     });
   };
 
   const toggleConfigurator = id => {
-    if (openConfiguratorId === id) setOpenConfiguratorId(null);
-    else {
+    if (openConfiguratorId === id) {
+      setOpenConfiguratorId(null);
+      setCurrentStep(1);
+    } else {
       setOpenConfiguratorId(id);
-      setSelectedSize(allSizes[0]);
-      setSelectedColor(allColors[0]);
+       setSelectedSize('');    
+       setSelectedColor('');
+      setCurrentStep(2);
     }
   };
 
@@ -67,79 +80,100 @@ export default function ProductsList() {
     localStorage.setItem('cart', JSON.stringify(cart));
     alert(`Added ${item.name} (${selectedSize}, ${selectedColor})`);
     setOpenConfiguratorId(null);
+    setCurrentStep(3);
+    setCurrentStep(4);
+
   };
 
-  return (
-    <div className="products-list">
-      <aside className="facets">
-        <h3>Filter by Size</h3>
-        {allSizes.map(sz => (
-          <label key={sz}>
-            <input
-              type="checkbox"
-              checked={filters.sizes.includes(sz)}
-              onChange={() => toggleFacet('sizes', sz)}
-            /> {sz}
-          </label>
-        ))}
+    const instructionText = () => {
+    switch (currentStep) {
+      case 1: return `Step 1 of ${totalSteps}: Select your sneaker`;
+      case 2: return `Step 2 of ${totalSteps}: Choose size & color`;
+      case 3: return `Step 3 of ${totalSteps}: Add to cart`;
+      case 4: return `Step 4 of ${totalSteps}: Go to cart`;
+      default: return '';
+    }
+  };
 
-        <h3>Filter by Color</h3>
-        {allColors.map(cl => (
-          <label key={cl}>
-            <input
-              type="checkbox"
-              checked={filters.colors.includes(cl)}
-              onChange={() => toggleFacet('colors', cl)}
-            /> {cl}
-          </label>
-        ))}
-      </aside>
+   return (
+     <>
+      {/* Step Indicator */}
+      <div className="step-indicator">
+        <div className="steps">
+          {[1,2,3,4].map(n => (
+            <div key={n} className={`step ${currentStep===n?'active':''}`}>
+              {n}
+            </div>
+          ))}
+        </div>
+        <div className="label">{instructionText()}</div>
+      </div>
 
-      <main className="grid">
-        {filteredCatalog.map(item => (
-          <div key={item.id} className="card">
-            <img src={item.image} alt={item.name} />
-            <h4>{item.name}</h4>
-            <p>${item.price}</p>
-            <button onClick={() => toggleConfigurator(item.id)}>
-              {openConfiguratorId === item.id ? 'Close' : 'Add to Cart'}
-            </button>
 
-            {openConfiguratorId === item.id && (
-              <div className="dropdown">
-                <div className="dropdown-row">
-                  <label>Size:</label>
-                  <select
-                    value={selectedSize}
-                    onChange={e => setSelectedSize(e.target.value)}
-                  >
-                    {item.availableSizes.map(sz => (
-                      <option key={sz}>{sz}</option>
-                    ))}
-                  </select>
+      <div className="products-list">
+        <aside className="facets">
+          <h3>Filter by Size</h3>
+          {allSizes.map(sz => (
+            <label key={sz}>
+              <input
+                type="checkbox"
+                checked={filters.sizes.includes(sz)}
+                onChange={() => toggleFacet('sizes', sz)}
+              /> {sz}
+            </label>
+          ))}
+
+          <h3>Filter by Color</h3>
+          {allColors.map(cl => (
+            <label key={cl}>
+              <input
+                type="checkbox"
+                checked={filters.colors.includes(cl)}
+                onChange={() => toggleFacet('colors', cl)}
+              /> {cl}
+            </label>
+          ))}
+        </aside>
+
+        <main className="grid">
+          {filteredCatalog.map(item => (
+            <div key={item.id} className="card">
+              <img src={item.image} alt={item.name} />
+              <h4>{item.name}</h4>
+              <p>${item.price}</p>
+
+              <button onClick={() => toggleConfigurator(item.id)}>
+                {openConfiguratorId === item.id ? 'Close' : 'Add to Cart'}
+              </button>
+
+              {openConfiguratorId === item.id && (
+                <div className="dropdown">
+                  <div className="dropdown-row">
+                    <label>Size:</label>
+                   <select value={selectedSize} onChange={e => setSelectedSize(e.target.value)}>
+                     <option value="" disabled>Pick your size</option>
+                     {item.availableSizes.map(sz => <option key={sz} value={sz}>{sz}</option>)}
+                   </select>
+                  </div>
+                  <div className="dropdown-row">
+                    <label>Color:</label>
+                   <select value={selectedColor} onChange={e => setSelectedColor(e.target.value)}>
+                     <option value="" disabled>Pick your color</option>
+                     {item.availableColors.map(cl => <option key={cl} value={cl}>{cl}</option>)}
+                   </select>
+                  </div>
+                  <button className="btn-confirm" onClick={() => confirmAdd(item)} disabled={selectedSize === '' || selectedColor === ''}>
+                    Confirm
+                  </button>
+                  <button className="btn-cancel" onClick={() => toggleConfigurator(item.id)}>
+                    Cancel
+                  </button>
                 </div>
-                <div className="dropdown-row">
-                  <label>Color:</label>
-                  <select
-                    value={selectedColor}
-                    onChange={e => setSelectedColor(e.target.value)}
-                  >
-                    {item.availableColors.map(cl => (
-                      <option key={cl}>{cl}</option>
-                    ))}
-                  </select>
-                </div>
-                <button className="btn-confirm" onClick={() => confirmAdd(item)}>
-                  Confirm
-                </button>
-                <button className="btn-cancel" onClick={() => setOpenConfiguratorId(null)}>
-                  Cancel
-                </button>
-              </div>
-            )}
-          </div>
-        ))}
-      </main>
-    </div>
+              )}
+            </div>
+          ))}
+        </main>
+      </div>
+    </>
   );
 }

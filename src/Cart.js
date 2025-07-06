@@ -3,6 +3,20 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Cart.css';
 
+const Stepper = ({ steps, currentStep }) => (
+  <div className="stepper">
+    {steps.map((label, index) => (
+      <div
+        key={index}
+        className={`step ${currentStep === index + 1 ? 'active' : ''}`}
+      >
+        <div className="step-number">{index + 1}</div>
+        <div className="step-label">{label}</div>
+      </div>
+    ))}
+  </div>
+);
+
 export default function Cart() {
   const [items, setItems] = useState([]);
   const [step, setStep] = useState(1);
@@ -10,10 +24,19 @@ export default function Cart() {
   const [payment, setPayment] = useState({ cardNumber: '', expiry: '', cvv: '' });
   const [survey, setSurvey] = useState({ rating: '', comments: '' });
 
+  // Charger le panier au montage
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     setItems(cart);
   }, []);
+
+  // Réinitialiser le panier lorsque l'utilisateur arrive à l'étape 4 (confirmation)
+  useEffect(() => {
+    if (step === 4) {
+      localStorage.removeItem('cart');
+      setItems([]);
+    }
+  }, [step]);
 
   const removeItem = index => {
     const updated = items.filter((_, i) => i !== index);
@@ -28,8 +51,13 @@ export default function Cart() {
   const handlePaymentChange = e => setPayment({ ...payment, [e.target.name]: e.target.value });
   const handleSurveyChange = e => setSurvey({ ...survey, [e.target.name]: e.target.value });
 
+  const steps = ['Cart', 'Information', 'Payment', 'Confirmation', 'Survey'];
+
   return (
     <div className="cart-page">
+      {/* Stepper en haut de la page */}
+      <Stepper steps={steps} currentStep={step} />
+
       {step === 1 && (
         <>
           <h2>Your Cart</h2>
@@ -102,6 +130,7 @@ export default function Cart() {
           <p>A confirmation has been sent to {info.email}.</p>
           <div className="form-actions">
             <button onClick={handleNext}>Take our Survey</button>
+            <Link to="/" className="button home-button">Home</Link>
           </div>
         </div>
       )}
@@ -122,8 +151,6 @@ export default function Cart() {
               disabled={!survey.rating}
               onClick={() => {
                 alert('Thank you for your feedback!');
-                localStorage.removeItem('cart');
-                setItems([]);
                 setStep(1);
               }}
             >
